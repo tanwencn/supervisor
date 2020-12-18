@@ -1,0 +1,35 @@
+{
+    "name": "tanwencn/supervise",
+    "description": "日志查看器，支持自定义文本解析。",
+    "type": "library",
+    "keywords": ["laravel", "log-viewer"],
+    "homepage": "https://github.com/tanwencn/supervise",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "tanwen",
+            "email": "361657055@qq.com"
+        }
+    ],
+    "require": {
+    },
+    "autoload": {
+        "psr-4": {
+            "Tanwencn\\Supervisor\\": "src/"
+        }
+    },
+    "minimum-stability": "stable",
+    "extra":{
+        "branch-alias":{
+            "dev-master":"1.0.x-dev"
+        },
+        "laravel": {
+            "providers": [
+                "Tanwecn\\Supervisor\\SupervisorServiceProvider"
+            ],
+            "aliases": {
+                "Horizon": "Tanwencn\\Supervisor\\Supervisor"
+            }
+        }
+    }
+}
