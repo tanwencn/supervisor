@@ -23,6 +23,7 @@ class ReverseAnalysis extends StreamAnalysis
     {
         $content = $char . $content;
         preg_match('/\[(\d{4}[-\d{2}]{2}.*?)\] (.+?)\.(.+?):(.*)/', $content, $result);
+        if (!empty($result)) $result[] = $content;
         return $result;
     }
 

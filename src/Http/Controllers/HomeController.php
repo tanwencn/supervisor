@@ -73,6 +73,6 @@ class HomeController extends Controller
 
         Cache::put("supervisor-resolever-{$input['code']}", $resolever, 300);
 
-        return $data;
+        return array_filter($data);
     }
 }

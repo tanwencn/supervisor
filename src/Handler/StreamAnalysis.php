@@ -16,6 +16,8 @@ abstract class StreamAnalysis implements AnalysisInterface
 
     protected $config;
 
+    protected $line = 0;
+
     public function __construct($path, $config)
     {
         $this->path = $path;
@@ -41,6 +43,7 @@ abstract class StreamAnalysis implements AnalysisInterface
             if (!empty($result)) break;
         }
 
+        $this->line++;
         return $this->formatRow($result);
     }
 
@@ -50,9 +53,12 @@ abstract class StreamAnalysis implements AnalysisInterface
 
     protected function formatRow($values)
     {
+        if(empty($values)) return $values;
         $values = array_map(function ($val) {
             return mb_convert_encoding($val, "UTF-8");
         }, $values);
-        return array_combine(array_slice(['date', 'env', 'level', 'description', 'fullText'], 0, count($values)), array_values($values));
+        array_unshift($values, $this->line);
+        $values = array_combine(array_slice(['id', 'date', 'env', 'level', 'code', 'fullText'], 0, count($values)), array_values($values));
+        return $values;
     }
 }
