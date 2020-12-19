@@ -11,7 +11,7 @@ class ReverseAnalysis extends StreamAnalysis
         fseek($this->stream, $this->offset, SEEK_END);
     }
 
-    protected function read(): Iterator
+    protected function read(): iterable
     {
         while (ftell($this->stream) > 1) {
             $this->offset-- && $this->seek();
@@ -23,11 +23,12 @@ class ReverseAnalysis extends StreamAnalysis
     {
         $content = $char . $content;
         preg_match('/\[(\d{4}[-\d{2}]{2}.*?)\] (.+?)\.(.+?):(.*)/', $content, $result);
-        if (!empty($result)) {
-            unset($result[0]);
-            $result[] = mb_convert_encoding($content, "UTF-8");
-        }
-
         return $result;
+    }
+
+    protected function formatRow($values)
+    {
+        unset($values[0]);
+        return parent::formatRow($values);
     }
 }

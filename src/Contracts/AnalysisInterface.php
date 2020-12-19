@@ -12,5 +12,5 @@ interface AnalysisInterface
 
     public function bootstrap(Filesystem $filesystem);
 
-    public function next();
+    public function next():array;
 }

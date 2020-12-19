@@ -43,7 +43,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Memory Limit (MB)
+    | Timeout (seconds)
     |--------------------------------------------------------------------------
     |
     | This value describes the maximum amount of memory the Supervisor worker
@@ -52,25 +52,25 @@ return [
     |
     */
 
-    'memory_limit' => 32,
+    'single_time' => 0,
 
     'disks' => [
-        'local' => [
+        'supervisor_local' => [
             'driver' => 'local',
-            'root' => storage_path('log'),
+            'root' => storage_path('logs'),
         ],
     ],
 
-    'view' => ['reverse'],
+    'view' => ['reverse', 'positive'],
 
     'resolvers' => [
         'reverse' => [
-            'disk' => 'local',
+            'disk' => 'supervisor_local',
             'resolver' => 'reverse',
             'extension' => 'log'
         ],
         'positive' => [
-            'disk' => 'local',
+            'disk' => 'supervisor_local',
             'resolver' => 'positive',
             'extension' => 'log'
         ]

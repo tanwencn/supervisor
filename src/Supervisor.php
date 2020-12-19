@@ -58,22 +58,26 @@ class Supervisor
         return config('supervisor.view');
     }
 
-    public static function resolever($name)
+    /**
+     * @param string $name
+     * @return Resolever
+     */
+    public static function resolever(string $name)
     {
-        if(isset(static::$resolever[$name])) return static::$resolever[$name];
+        if (isset(static::$resolever[$name])) return static::$resolever[$name];
 
         $config = config("supervisor.resolvers.{$name}");
-        if(empty($config[$name]))
+
+        if (empty($config))
             throw new \InvalidArgumentException("supervisor.resolvers.{$name} is not defind.");
 
-        static::$resolever[$name] = new Resolever($config, config("supervisor.handler"));
+        static::$resolever[$name] = new Resolever($config, config("supervisor.handler"), $name);
 
         return static::resolever($name);
-
-        $key = md5($class . $path);
-        if (!class_exists($class)) {
-            throw new InvalidArgumentException("Driver [{$class}] is not supported.");
-        } else if (!isset($this->analyses[$key]) || !$this->analyses[$key]) {
-            $this->analyses[$key] = new $class($path, []);
-        }
     }
+
+    public static function config($key)
+    {
+        return config("supervisor.{$key}");
+    }
+}

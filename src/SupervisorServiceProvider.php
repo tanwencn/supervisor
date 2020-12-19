@@ -2,6 +2,7 @@
 
 namespace Tanwencn\Supervisor;
 
+use Illuminate\Contracts\Foundation\CachesConfiguration;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -41,10 +42,10 @@ class SupervisorServiceProvider extends ServiceProvider
      */
     protected function registerRoutes()
     {
-        Route::group([
+        \Route::group([
             'domain' => config('supervisor.domain', null),
             'prefix' => config('supervisor.path'),
-            'namespace' => 'Tanwencn\supervisor\Http\Controllers',
+            'namespace' => 'Tanwencn\Supervisor\Http\Controllers',
             'middleware' => config('supervisor.middleware', 'web'),
         ], function () {
             $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
@@ -77,6 +78,14 @@ class SupervisorServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             __DIR__.'/../config/supervisor.php', 'supervisor'
         );
+
+        if (! ($this->app instanceof CachesConfiguration && $this->app->configurationIsCached())) {
+            $config = $this->app->make('config');
+
+            $config->set('filesystems.disks', array_merge(
+                $config->get('supervisor.disks', []), $config->get('filesystems.disks', [])
+            ));
+        }
     }
 
     /**
@@ -101,7 +110,7 @@ class SupervisorServiceProvider extends ServiceProvider
     protected function authorization()
     {
         Supervisor::auth(function ($request) {
-            return Gate::check('viewSupervisor', [$request->user()]);
+            return app()->environment('local') || Gate::check('viewSupervisor', [$request->user()]);
         });
     }
 }

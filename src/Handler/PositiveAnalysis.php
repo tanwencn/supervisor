@@ -4,12 +4,14 @@ namespace Tanwencn\Supervisor\Handler;
 
 class PositiveAnalysis extends StreamAnalysis
 {
+    protected $offset;
+
     protected function seek()
     {
         fseek($this->stream, $this->offset);
     }
 
-    protected function read(): Iterator
+    protected function read(): iterable
     {
         while (!feof($this->stream)) {
             yield fgets($this->stream);
@@ -25,7 +27,7 @@ class PositiveAnalysis extends StreamAnalysis
             $this->offset = ftell($this->stream);
             $data = array_column(array_column($result, 0), 0);
             unset($data[0]);
-            $data[] = mb_convert_encoding($content, "UTF-8");
+            $data[] = $content;
         }
         if ($match > 1) {
             $offset = $result[0][1][1];
@@ -33,7 +35,7 @@ class PositiveAnalysis extends StreamAnalysis
             $this->seek();
             $data = array_column(array_column($result, 0), 0);
             unset($data[0]);
-            $data[] = mb_convert_encoding(substr($content, 0, $offset), "UTF-8");
+            $data[] = substr($content, 0, $offset);
         }
         return $data;
     }

@@ -3,6 +3,7 @@
 namespace Tanwencn\Supervisor\Handler;
 
 use League\Flysystem\Filesystem;
+use Tanwencn\Supervisor\Contracts\AnalysisInterface;
 
 abstract class StreamAnalysis implements AnalysisInterface
 {
@@ -31,7 +32,7 @@ abstract class StreamAnalysis implements AnalysisInterface
 
     abstract protected function seek();
 
-    public function next()
+    public function next(): array
     {
         $content = '';
         $result = [];
@@ -40,10 +41,18 @@ abstract class StreamAnalysis implements AnalysisInterface
             if (!empty($result)) break;
         }
 
-        return array_values($result);
+        return $this->formatRow($result);
     }
 
-    abstract protected function read(): Iterator;
+    abstract protected function read(): iterable;
 
     abstract protected function match(&$content, $char);
+
+    protected function formatRow($values)
+    {
+        $values = array_map(function ($val) {
+            return mb_convert_encoding($val, "UTF-8");
+        }, $values);
+        return array_combine(array_slice(['date', 'env', 'level', 'description', 'fullText'], 0, count($values)), array_values($values));
+    }
 }
