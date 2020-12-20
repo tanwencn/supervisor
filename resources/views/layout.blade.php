@@ -10,8 +10,10 @@
 
 <body style="background-color: #ececec; ">
     <div id="app"></div>
-    <!-- built files will be auto injected -->
-    <script src="{{asset('js/app.js')}}"></script>
+    <script>
+        window.basePath = '{{ $supervisorBasePath }}'
+    </script>
+    <script src="{{asset(mix('app.js', 'vendor/supervisor'))}}"></script>
 </body>
 
 </html>

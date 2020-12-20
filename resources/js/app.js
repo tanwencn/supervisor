@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Antd from 'ant-design-vue/';
-import 'ant-design-vue/dist/antd.css';
+import '../../node_modules/ant-design-vue/dist/antd.css';
 import App from './App.vue'
 import router from "./router.js"
 import axios from 'axios';

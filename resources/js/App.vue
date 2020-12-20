@@ -3,20 +3,20 @@
     <div style="padding: 30px; max-width: 1140px; margin: auto">
       <a-row :gutter="[16, 16]">
         <a-col :span="24">
-          <a-page-header title="Supervisor" sub-title="This is a subtitle">
+          <a-page-header title="Supervisor">
             <template slot="extra">
             </template>
-            <a-descriptions size="small" :column="3" v-if="descriptions">
-              <a-descriptions-item label="Last Modified">
+            <a-descriptions size="small" :column="3">
+              <a-descriptions-item label="Last Modified" v-if="descriptions.date">
                 {{ descriptions.date }}
               </a-descriptions-item>
-              <a-descriptions-item label="Type" v-if="descriptions">
+              <a-descriptions-item label="Type" v-if="descriptions.type">
                 {{ descriptions.type }}
               </a-descriptions-item>
-              <a-descriptions-item label="Size" v-if="descriptions">
+              <a-descriptions-item label="Size" v-if="descriptions.size">
                 {{ descriptions.size }}
               </a-descriptions-item>
-              <a-descriptions-item label="Path" v-show="descriptions">
+              <a-descriptions-item label="Path" v-if="descriptions.path">
                 {{ descriptions.path }}
               </a-descriptions-item>
             </a-descriptions>

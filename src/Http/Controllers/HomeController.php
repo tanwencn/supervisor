@@ -17,7 +17,7 @@ class HomeController extends Controller
     public function index()
     {
         return view('supervisor::layout', [
-            //'horizonScriptVariables' => Horizon::scriptVariables(),
+            'supervisorBasePath' => Supervisor::config('deep_base_router').'/'.Supervisor::config('path')
         ]);
     }
 
@@ -67,9 +67,10 @@ class HomeController extends Controller
 
         $data = [];
         do {
-            $data[] = $container->next();
+            $next = $container->next();
+            $data[] = $next;
             $use_time = time() - $start_time;
-        } while ($use_time < $single_time);
+        } while ($use_time < $single_time && !empty($next));
 
         Cache::put("supervisor-resolever-{$input['code']}", $resolever, 300);
 

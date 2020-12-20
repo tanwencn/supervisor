@@ -10,17 +10,12 @@
       "
     >
       <a-card :bordered="false" :bodyStyle="{ padding: '0' }">
-        <a-spin
-        v-if="!spinning"
-          :spinning="loading"
-          style="
-            position: absolute;
-            margin-left: 20px;
-            margin-top: 20px;
-            z-index: 4;
-            display: block;
-          "
-        />
+        <div class="table-operations">
+          <a-input-search
+            placeholder="input search text"
+            style="width: 200px"
+          />
+        </div>
         <a-table
           :columns="columns"
           :data-source="data"
@@ -75,10 +70,10 @@
             type="search"
             :style="{ color: filtered ? '#108ee9' : undefined }"
           />
-
-          <a slot="action" slot-scope="text" @click="() => onShow(text)"
-            >Full Text</a
-          >
+          
+          <template slot="action" slot-scope="record">
+            <a @click="() => onShow(text)">Full Text</a>
+          </template>
           <template slot="highlight" slot-scope="text, record, index, column">
             <span v-if="searchText">
               <template
@@ -126,7 +121,6 @@ const bootstrap = {
   fullText: null,
   show: false,
   spinning: true,
-  loading: true,
   searchText: "",
   searchInput: null,
   searchedColumn: "",
@@ -151,7 +145,8 @@ export default {
       this.fullText = null;
       this.show = false;
     },
-    onShow(text) {
+    onShow(record) {
+      console.log(record);
       this.fullText = text;
       this.show = true;
     },
@@ -169,7 +164,7 @@ export default {
       });
       this.columns.push({
         title: "more",
-        dataIndex: "fullText",
+        dataIndex: "search",
         scopedSlots: {
           filterDropdown: "filterDropdown",
           filterIcon: "filterIcon",
@@ -177,12 +172,15 @@ export default {
         },
         onFilter: (value, record) => {
           for (let key in record) {
-            let search = record[key]
-              .toString()
-              .toLowerCase()
-              .includes(value.toLowerCase());
-            if (search) return record;
+            if (
+              record[key].toString().toLowerCase().includes(value.toLowerCase())
+            )
+              return record;
           }
+          return record.date
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase());
         },
         onFilterDropdownVisibleChange: (visible) => {
           if (visible) {
@@ -202,7 +200,7 @@ export default {
         if (logTag != this.bootTag) return;
         this.spinning = false;
         var data = response.data;
-        if (data.length == 0) return (this.loading = false);
+        if (data.length == 0) return;
         this.first = false;
         if (this.columns.length < 1) {
           this.setColumns(Object.keys(data[0]));

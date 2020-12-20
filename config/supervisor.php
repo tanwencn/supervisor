@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'single_time' => 0,
+    'single_time' => 3,
 
     'disks' => [
         'supervisor_local' => [
@@ -78,5 +78,7 @@ return [
 
     'handler' => [
 
-    ]
+    ],
+
+    'deep_base_router' => ''
 ];

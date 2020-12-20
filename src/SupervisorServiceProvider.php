@@ -10,13 +10,6 @@ class SupervisorServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        if ($this->app->runningInConsole()) {
-            $this->publishes([
-                __DIR__ . '/../config' => config_path(),
-                __DIR__ . '/../resources/assets' => public_path('vendor/laravel-elfinder'),
-            ], 'supervisor');
-        }
-
         $this->registerRoutes();
         $this->registerResources();
         $this->defineAssetPublishing();
@@ -31,8 +24,8 @@ class SupervisorServiceProvider extends ServiceProvider
     public function defineAssetPublishing()
     {
         $this->publishes([
-            __DIR__ . '/public' => public_path('vendor/supervisor'),
-        ], 'supervisor');
+            SUPERVISOR_PATH . '/public' => public_path('vendor/supervisor'),
+        ], 'supervisor-assets');
     }
 
     /**
@@ -63,20 +56,39 @@ class SupervisorServiceProvider extends ServiceProvider
     }
 
     /**
+     * Register the Horizon Artisan commands.
+     *
+     * @return void
+     */
+    protected function registerCommands()
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                Console\InstallCommand::class,
+            ]);
+        }
+    }
+
+    /**
      * Register any application services.
      *
      * @return void
      */
     public function register()
     {
+        if (!defined('SUPERVISOR_PATH')) {
+            define('SUPERVISOR_PATH', realpath(__DIR__ . '/../'));
+        }
+
         $this->configure();
         $this->offerPublishing();
+        $this->registerCommands();
     }
 
     protected function configure()
     {
         $this->mergeConfigFrom(
-            __DIR__.'/../config/supervisor.php', 'supervisor'
+            SUPERVISOR_PATH.'/config/supervisor.php', 'supervisor'
         );
 
         if (! ($this->app instanceof CachesConfiguration && $this->app->configurationIsCached())) {

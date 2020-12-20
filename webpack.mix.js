@@ -24,7 +24,6 @@ mix.options({
     .setPublicPath('public')
     .js('resources/js/app.js', 'public')
     .version()
-    .copy('public', '../../supervisortest/public/vendor/horizon')
     .webpackConfig({
         resolve: {
             symlinks: false,

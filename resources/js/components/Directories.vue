@@ -67,12 +67,10 @@ export default {
     selectTree(keys, e) {
       var data = e.node.dataRef;
       this.$emit("descriptionsEvent", {
-        path:data.path,
-        type:data.type,
-        size:this.fileSize(data.size),
-        date: this.$moment(data.timestamp * 1000).format(
-          "YYYY-MM-DD HH:mm:ss"
-        ),
+        path: data.path,
+        type: data.type,
+        size: this.fileSize(data.size),
+        date: this.$moment(data.timestamp * 1000).format("YYYY-MM-DD HH:mm:ss"),
       });
       var code = keys[0];
       var isFile = e.node.isLeaf;
@@ -88,9 +86,6 @@ export default {
           })
           .then((response) => {
             var data = response.data;
-            data.sort(function (a, b) {
-              return a.timestamp < b.timestamp;
-            });
             resolve(data);
           });
       });

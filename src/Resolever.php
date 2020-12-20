@@ -95,6 +95,9 @@ class Resolever implements \Serializable
             ->filter(function ($item) {
                 return $item['type'] == 'dir' || $item['extension'] == 'log';
             })
+            ->sortByDesc(function ($value) {
+                return ($value['type']=='dir'?1:0).$value['timestamp'];
+            })
             ->map(function ($values) {
                 return array_merge([
                     'resolver' => $this->name,
