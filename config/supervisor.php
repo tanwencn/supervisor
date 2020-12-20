@@ -20,9 +20,9 @@ return [
     | Supervisor Path
     |--------------------------------------------------------------------------
     |
-    | This is the URI path where Supervisor will be accessible from. Feel free
-    | to change this path to anything you like. Note that the URI will not
-    | affect the paths of its internal API that aren't exposed to users.
+    | This is the URI prefix for Supervisor.
+    |
+    | 这个是Supervisor的URI前缀
     |
     */
 
@@ -46,13 +46,26 @@ return [
     | Timeout (seconds)
     |--------------------------------------------------------------------------
     |
-    | This value describes the maximum amount of memory the Supervisor worker
-    | may consume before it is terminated and restarted. You should set
-    | this value according to the resources available to your server.
+    | This value describes the maximum seconds of single request the Supervisor
     |
+    | 解析文件的单次请求最大解析时间，也意味着你在视图中将要等待的最大秒数。
+    | 超时后会进行断点轮询，建议设置为0-3秒。
+    | 
     */
 
     'single_time' => 3,
+
+    /*
+    |--------------------------------------------------------------------------
+    | disks
+    |--------------------------------------------------------------------------
+    |
+    | This is the Filesystem drive configuration.
+    | for details, please refer to config/ Filesystem.php and pay attention to the key values.
+    |
+    | 这个是Filesystem驱动配置，具体配置项参考config/filesystem.php，注意key值不要重复。
+    | 
+    */
 
     'disks' => [
         'supervisor_local' => [
@@ -61,7 +74,19 @@ return [
         ],
     ],
 
-    'view' => ['reverse', 'positive'],
+    /*
+    |--------------------------------------------------------------------------
+    | resolvers
+    |--------------------------------------------------------------------------
+    |
+    | is a file parsing driver.
+    | that provides Laravel log reverse and positive parsers by default The
+    | Custom drivers can be configured in the handler item of config/supervisor.php
+    |
+    | 这个是文件解析驱动，默认提供Laravel日志的逆向(reverse)和正向(positive)解析器
+    | 自定义驱动可以在config/supervisor.php 的handler项进行配置
+    | 
+    */
 
     'resolvers' => [
         'reverse' => [
@@ -76,9 +101,40 @@ return [
         ]
     ],
 
-    'handler' => [
+    /*
+    |--------------------------------------------------------------------------
+    | view
+    |--------------------------------------------------------------------------
+    |
+    | This is the list of parsers to display in the Supervisor view list
+    |
+    | 这个是Supervisor视图列表中要显示出来的解析器列表
+    |
+    */
+    'view' => ['reverse', 'positive'],
 
-    ],
+    /*
+    |--------------------------------------------------------------------------
+    | handler
+    |--------------------------------------------------------------------------
+    |
+    | This is a custom file resolution handler.
+    |
+    | 这个是自定义文件解析处理器
+    |
+    */
+    'handler' => [],
 
+    /*
+    |--------------------------------------------------------------------------
+    | deep_base_router
+    |--------------------------------------------------------------------------
+    |
+    | If your APP is not in the root directory of domain name access road jin.
+    | Just configure this prefix
+    |
+    | 如果你的APP不在域名访问路劲的根目录下，就配置上这个前缀吧
+    |
+    */
     'deep_base_router' => ''
 ];
