@@ -37,18 +37,18 @@ Supervisor 在 /supervisor 上显示了一个视图面板。默认情况下，�
 
 ```php
 public function boot()
-    {
-        $this->gateSupervisor();
-    }
+{
+    $this->gateSupervisor();
+}
 
-    protected function gateSupervisor()
-    {
-        Gate::define('viewSupervisor', function ($user) {
-            return in_array($user->name, [
-                'tanwencn',
-            ]);
-        });
-    }
+protected function gateSupervisor()
+{
+    Gate::define('viewSupervisor', function ($user) {
+        return in_array($user->name, [
+            'tanwencn',
+        ]);
+    });
+}
 ```
 
 
