@@ -15,7 +15,7 @@
     },
     "autoload": {
         "psr-4": {
-            "\\Tanwencn\\Supervisor\\": "src/"
+            "Tanwencn\\Supervisor\\": "src/"
         }
     },
     "extra":{
