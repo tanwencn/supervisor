@@ -37,7 +37,7 @@ export default {
     };
   },
   mounted: function () {
-    this.$http.get("/supervisor/api/resolvers").then((response) => {
+    this.$http.get("/api/resolvers").then((response) => {
       this.resolvers = response.data;
     });
   },
@@ -81,7 +81,7 @@ export default {
     request(resolver, code = "") {
       return new Promise((resolve) => {
         this.$http
-          .get("/supervisor/api/directoris", {
+          .get("/api/directoris", {
             params: { resolver, code },
           })
           .then((response) => {

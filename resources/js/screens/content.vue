@@ -212,7 +212,7 @@ export default {
       });
     },
     requestContent(params) {
-      return this.$http.get("/supervisor/api/contents", { params });
+      return this.$http.get("/api/contents", { params });
     },
     bootstrap() {
       this.bootTag = Math.ceil(Math.random() * 100000);
