@@ -50,7 +50,7 @@ return [
     |
     | 解析文件的单次请求最大解析时间，也意味着你在视图中将要等待的最大秒数。
     | 超时后会进行断点轮询，建议设置为0-3秒。
-    | 
+    |
     */
 
     'single_time' => 1,
@@ -64,7 +64,7 @@ return [
     | for details, please refer to config/ Filesystem.php and pay attention to the key values.
     |
     | 这个是Filesystem驱动配置，具体配置项参考config/filesystem.php，注意key值不要重复。
-    | 
+    |
     */
 
     'disks' => [
@@ -85,18 +85,20 @@ return [
     |
     | 这个是文件解析驱动，默认提供Laravel日志的逆向(reverse)和正向(positive)解析器
     | 自定义驱动可以在config/supervisor.php 的handler项进行配置
-    | 
+    |
     */
 
     'resolvers' => [
         'reverse' => [
             'disk' => 'supervisor_local',
-            'resolver' => 'reverse',
+            'mode' => 'reverse',
+            'format' => 'reverse',
             'extension' => 'log'
         ],
         'positive' => [
             'disk' => 'supervisor_local',
-            'resolver' => 'positive',
+            'mode' => 'positive',
+            'format' => 'positive',
             'extension' => 'log'
         ]
     ],
@@ -115,15 +117,27 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | handler
+    | mode
     |--------------------------------------------------------------------------
     |
-    | This is a custom file resolution handler.
+    | This is a custom file handler.
     |
-    | 这个是自定义文件解析处理器
+    | 这个是自定义文件处理器
     |
     */
-    'handler' => [],
+    'mode' => [],
+
+    /*
+    |--------------------------------------------------------------------------
+    | mode
+    |--------------------------------------------------------------------------
+    |
+    | This is a custom match and return result.
+    |
+    | 这个是自定义匹配及返回结果
+    |
+    */
+    'format' => [],
 
     /*
     |--------------------------------------------------------------------------

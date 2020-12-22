@@ -1,11 +1,9 @@
 <?php
 
-namespace Tanwencn\Supervisor\Handler;
+namespace Tanwencn\Supervisor\FileMode;
 
-class ReverseStreamMode extends StreamAnalysis
+class ReverseStreamMode extends StreamMode
 {
-    protected $offset = 0;
-
     protected function seek()
     {
         fseek($this->stream, $this->offset, SEEK_END);

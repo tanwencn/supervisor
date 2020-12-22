@@ -13,7 +13,7 @@ class ReverseLaravelLog implements MacthForamtInterface
     public function match(&$content, $char): array
     {
         $content = $char . $content;
-        preg_match('/\[(\d{4}[-\d{2}]{2}.*?)\] (.+?)\.(.+?):(.*)/', $content, $result);
+        preg_match($this->reg, $content, $result);
         if (!empty($result)) $result[] = $content;
         return $result;
     }

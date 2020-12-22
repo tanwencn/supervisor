@@ -3,8 +3,10 @@
 namespace Tanwencn\Supervisor;
 
 use Illuminate\Support\Collection;
-use Tanwencn\Supervisor\Handler\PositiveAnalysis;
-use Tanwencn\Supervisor\Handler\ReverseAnalysis;
+use Tanwencn\Supervisor\FileMode\PositiveStreamMode;
+use Tanwencn\Supervisor\FileMode\ReverseStreamMode;
+use Tanwencn\Supervisor\MacthForamt\PositiveLaravelLog;
+use Tanwencn\Supervisor\MacthForamt\ReverseLaravelLog;
 
 class Resolever implements \Serializable
 {
@@ -12,21 +14,22 @@ class Resolever implements \Serializable
 
     protected $filesystem;
 
-    protected $handler;
+    protected $model;
 
     protected $container;
 
     protected $name;
 
-    public function __construct($config, $handler, $name)
+    static $defaultAdapter = [
+        PositiveStreamMode::class => PositiveLaravelLog::class,
+        ReverseStreamMode::class => ReverseLaravelLog::class
+    ];
+
+    public function __construct($config, $modes, $name)
     {
         $this->config = $config;
-        $handler = array_merge([
-            'reverse' => ReverseAnalysis::class,
-            'positive' => PositiveAnalysis::class,
-        ], $handler);
 
-        $this->handler = $handler[$config['resolver']];
+        $this->mode = $modes[$config['mode']];
 
         $this->name = $name;
     }
@@ -39,11 +42,11 @@ class Resolever implements \Serializable
     public function unserialize($data)
     {
         $values = unserialize($data);
-        foreach ($values as $key=>$value) {
+        foreach ($values as $key => $value) {
             $this->$key = $value;
         }
 
-        foreach ((array)$this->container as $container){
+        foreach ((array)$this->container as $container) {
             $container->bootstrap($this->filesystem());
         }
     }
@@ -62,7 +65,7 @@ class Resolever implements \Serializable
 
     public function container($path)
     {
-        $code = base64_encode($path);
+        $code = $this->name . base64_encode($path);
         if (isset($this->container[$code])) return $this->container[$code];
 
         return $this->container[$code] = $this->newContainer($path);
@@ -70,7 +73,7 @@ class Resolever implements \Serializable
 
     protected function newContainer($path)
     {
-        $class = $this->handler;
+        $class = $this->mode;
 
         if (!class_exists($class))
             throw new \InvalidArgumentException("{$class} it's not found.");
@@ -96,7 +99,7 @@ class Resolever implements \Serializable
                 return $item['type'] == 'dir' || $item['extension'] == 'log';
             })
             ->sortByDesc(function ($value) {
-                return ($value['type']=='dir'?1:0).$value['timestamp'];
+                return ($value['type'] == 'dir' ? 1 : 0) . $value['timestamp'];
             })
             ->map(function ($values) {
                 return array_merge([

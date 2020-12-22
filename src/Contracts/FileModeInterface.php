@@ -12,5 +12,5 @@ interface FileMode
 
     public function bootstrap(Filesystem $filesystem);
 
-    public function next():array;
+    public function next(MatchFormatInterface $format):array;
 }

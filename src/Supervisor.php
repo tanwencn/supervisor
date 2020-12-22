@@ -3,6 +3,8 @@
 namespace Tanwencn\Supervisor;
 
 use Closure;
+use Tanwencn\Supervisor\FileMode\PositiveStreamMode;
+use Tanwencn\Supervisor\FileMode\ReverseStreamMode;
 
 class Supervisor
 {
@@ -71,7 +73,10 @@ class Supervisor
         if (empty($config))
             throw new \InvalidArgumentException("supervisor.resolvers.{$name} is not defind.");
 
-        static::$resolever[$name] = new Resolever($config, config("supervisor.handler"), $name);
+        static::$resolever[$name] = new Resolever($config, array_merge([
+            'reverse' => ReverseStreamMode::class,
+            'positive' => PositiveStreamMode::class,
+        ], config("supervisor.mode", [])), $name);
 
         return static::resolever($name);
     }
