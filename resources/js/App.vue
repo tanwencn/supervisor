@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div style="padding: 30px; max-width: 1140px; margin: auto">
+    <div style="padding: 30px 120px; width:90%; min-width: 1140px; margin: auto">
       <a-row :gutter="[16, 16]">
         <a-col :span="24">
           <a-page-header title="Supervisor">

@@ -16,6 +16,7 @@
           :tree-data="tree[item]"
           @select="selectTree"
           :replace-fields="fields"
+          :style="{'margin':'-8px'}"
         />
         <a-empty v-else :description="false" />
       </a-collapse-panel>
