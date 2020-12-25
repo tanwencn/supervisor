@@ -24,6 +24,7 @@ mix.options({
     .setPublicPath('public')
     .js('resources/js/app.js', 'public')
     .version()
+    .copy('resources/img', 'public/img')
     .webpackConfig({
         resolve: {
             symlinks: false,
