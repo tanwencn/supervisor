@@ -108,12 +108,14 @@
       :visible="show"
       :dialog-style="{ top: '20px' }"
       :footer="null"
-      width="60%"
+      width="80%"
       @cancel="onHide"
     >
-      <p>
-        {{ fullText }}
-      </p>
+      <pre style="white-space:pre-wrap; /* css3.0 */
+white-space:-moz-pre-wrap; /* Firefox */
+white-space:-pre-wrap; /* Opera 4-6 */
+white-space:-o-pre-wrap; /* Opera 7 */
+word-wrap:break-word; /* Internet Explorer 5.5+ */ ">{{ fullText }}</pre>
     </a-modal>
   </div>
 </template>
@@ -170,6 +172,7 @@ export default {
       this.columns.push({
         title: "more",
         dataIndex: "fullText",
+        width:120,
         scopedSlots: {
           filterDropdown: "filterDropdown",
           filterIcon: "filterIcon",
