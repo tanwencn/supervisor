@@ -93,20 +93,46 @@ return [
             'mode' => 'filesystem',
             'disk' => 'supervisor_local',
             'order' => 'desc',
-            'table' => [
+            'render' => [
+                //'_visible' => ['date'],
+                //'_hidden' => ['date'],
                 'date' => [
                     'search' => false,
-                    'width' => 150
+                    // 'content' => 'ellipsis'
+                    //'width' => 150
                 ],
                 'more' => [
                     'content' => 'click'
                 ]
             ],
             'regular' => [
-                'expres' => '/\[(\d{4}[-\d{2}]{2}.*?)\] (.+?)\.(.+?):(.*)/',
+                'expres' => 'default',
                 'output' => ['date', 'env', 'level', 'code', 'more']
             ],
             'extension' => 'log'
+        ],
+        'default1' => [
+            'mode' => 'filesystem',
+            'disk' => 'supervisor_local',
+            'order' => 'desc',
+            'render' => [
+                //'_visible' => ['date'],
+                //'_hidden' => ['date'],
+                'date' => [
+                    'search' => false,
+                    // 'content' => 'ellipsis'
+                    //'width' => 150
+                ],
+                'more' => [
+                    'content' => 'click'
+                ]
+            ],
+            'regular' => [
+                'expres' => 'json',
+                //'output' => ['date', 'env', 'level', 'code', '更多']
+                //'output' => ['date', '更多']
+            ],
+            'extension' => 'json'
         ],
     ],
 
@@ -120,7 +146,7 @@ return [
     | 这个是Supervisor视图列表中要显示出来的解析器列表
     |
     */
-    'view' => ['default'],
+    'view' => ['default', 'default1'],
 
     /*
     |--------------------------------------------------------------------------

@@ -17,7 +17,7 @@ class FilesystemDescMode extends FilesystemMode
         }
     }
 
-    protected function match(&$content, $char)
+    protected function matchExpres(&$content, $char)
     {
         $content = $char . $content;
         preg_match($this->config['regular']['expres'], $content, $result);
@@ -25,9 +25,9 @@ class FilesystemDescMode extends FilesystemMode
         return $result;
     }
 
-    protected function formatRow($values)
+    protected function output($values)
     {
         unset($values[0]);
-        return parent::formatRow($values);
+        return parent::output($values);
     }
 }

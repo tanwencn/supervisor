@@ -91,7 +91,7 @@ class Supervisor
         $data = [];
         $config = config("supervisor.resolvers", []);
         foreach ($config as $key => $c){
-            $data[$key]['table'] = data_get($c, 'table', []);
+            $data[$key]['render'] = data_get($c, 'render', []);
         }
 
         return $data;

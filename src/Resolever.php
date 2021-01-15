@@ -16,16 +16,10 @@ class Resolever implements \Serializable
     protected $config;
 
     protected $filesystem;
-    protected $model;
 
     protected $container;
 
     protected $name;
-
-    static $defaultAdapter = [
-        PositiveStreamMode::class => PositiveLaravelLog::class,
-        ReverseStreamMode::class => ReverseLaravelLog::class
-    ];
 
     public function __construct($config, $modes, $name)
     {
@@ -102,7 +96,7 @@ class Resolever implements \Serializable
 
         return Collection::make($contents)
             ->filter(function ($item) {
-                return $item['type'] == 'dir' || $item['extension'] == 'log';
+                return $item['type'] == 'dir' || $item['extension'] == $this->config['extension'];
             })
             ->sortByDesc(function ($value) {
                 return ($value['type'] == 'dir' ? 1 : 0) . $value['timestamp'];

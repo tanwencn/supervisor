@@ -24,15 +24,41 @@ abstract class FilesystemMode implements FileModeContract
 
     abstract protected function read(): iterable;
 
-    abstract protected function match(&$content, $char);
+    abstract protected function matchExpres(&$content, $char);
+
+    protected function match(&$content, $char)
+    {
+        $expres = $this->config['regular']['expres'];
+        if ($expres != 'json') {
+            if ($expres == 'default') {
+                $this->config['regular']['expres'] = '/\[(\d{4}[-\d{2}]{2}.*?)\] (.+?)\.(.+?):(.*)/';
+                if (empty($this->config['regular']['output']))
+                    $this->config['regular']['output'] = ['date', 'env', 'level', 'code', 'more'];
+            }
+            return $this->matchExpres($content, $char);
+        }
+
+        $content = $char . $content;
+        if (empty($content)) return [];
+        if (strpos($content, '{') === false && strpos($content, '}') === false) return [];
+        $data = json_decode($content, true, 512);
+        if (json_last_error() !== JSON_ERROR_NONE) return [];
+        foreach ($data as $key => $val) {
+            $collect = collect($val);
+            if ($collect->count() > 1) $val = $collect->toJson(JSON_UNESCAPED_UNICODE);
+            $data[$key] = $val;
+        }
+
+        return $data;
+    }
 
     public function __construct(string $path, array $config)
     {
         $this->path = $path;
-        $config['regular'] = array_merge([
-            'expres' => '/\[(\d{4}[-\d{2}]{2}.*?)\] (.+?)\.(.+?):(.*)/',
-            'output' => ['date', 'env', 'level', 'code', 'more']
-        ], $config);
+        // $config['regular'] = array_merge([
+        //     'expres' => '/\[(\d{4}[-\d{2}]{2}.*?)\] (.+?)\.(.+?):(.*)/',
+        //     'output' => ['date', 'env', 'level', 'code', 'more']
+        // ], $config['regular']);
         $this->config = $config;
     }
 
@@ -65,12 +91,12 @@ abstract class FilesystemMode implements FileModeContract
             return mb_convert_encoding($val, "UTF-8");
         }, $values);
 
-        $output = $this->config['regular']['output'];
-        if (empty($output)) return $values;
-        $header = array_slice($output, 0, count($values));
-        $val = array_slice(array_values($values), 0, count($output));
-        $values = array_combine($header, $val);
-
-        return array_merge(['id' => $this->line], $values);
+        $output = data_get($this->config, 'regular.output', []);
+        if (!empty($output)) {
+            $header = array_slice($output, 0, count($values));
+            $val = array_slice(array_values($values), 0, count($output));
+            $values = array_combine($header, $val);
+        }
+        return array_merge(['supervisor-id' => $this->line], $values);
     }
 }

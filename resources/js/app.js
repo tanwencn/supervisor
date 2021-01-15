@@ -4,7 +4,11 @@ import '../../node_modules/ant-design-vue/dist/antd.css';
 import App from './App.vue'
 import router from "./router.js"
 import axios from 'axios';
-import moment from 'moment'
+import moment from 'moment';
+import hljs from 'highlight.js';
+import 'highlight.js/styles/vs2015.css';
+
+Vue.use(hljs.vuePlugin);
 
 Vue.use(Antd);
 

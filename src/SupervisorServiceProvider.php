@@ -66,6 +66,11 @@ class SupervisorServiceProvider extends ServiceProvider
             $this->commands([
                 Console\InstallCommand::class,
             ]);
+            if($this->app->isLocal()) {
+                $this->commands([
+                    Console\TestBuildCommand::class,
+                ]);
+            }
         }
     }
 
