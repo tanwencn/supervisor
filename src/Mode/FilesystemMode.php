@@ -97,6 +97,6 @@ abstract class FilesystemMode implements FileModeContract
             $val = array_slice(array_values($values), 0, count($output));
             $values = array_combine($header, $val);
         }
-        return array_merge(['supervisor-id' => $this->line], $values);
+        return array_merge(['supervisorid' => $this->line], $values);
     }
 }

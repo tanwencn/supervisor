@@ -25,7 +25,7 @@
           :columns="columns"
           :data-source="data"
           :pagination="pagination"
-          row-key="supervisor-id"
+          row-key="supervisorid"
         >
           <div
             slot="filterDropdown"
@@ -225,12 +225,12 @@ export default {
       return column;
     },
     setColumns(keys) {
-      if (keys.indexOf("supervisor-id") > -1) {
-        this.columns.push(this.getColumn("supervisor-id"));
+      if (keys.indexOf("supervisorid") > -1) {
+        this.columns.push(this.getColumn("supervisorid"));
       }
 
       keys.forEach((key) => {
-        if (key == "supervisor-id") return;
+        if (key == "supervisorid") return;
         this.columns.push(this.getColumn(key));
       });
     },
