@@ -123,7 +123,7 @@ return [
                     // 'content' => 'ellipsis'
                     //'width' => 150
                 ],
-                'more' => [
+                'employee' => [
                     'content' => 'click'
                 ]
             ],
