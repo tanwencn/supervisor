@@ -12,6 +12,10 @@
             white-space: pre-wrap;
             word-wrap: break-word;
         }
+
+        .ant-modal-body code{
+            padding: 20px;
+        }
     </style>
 </head>
 
