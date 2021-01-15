@@ -92,12 +92,20 @@ return [
         'default' => [
             'mode' => 'filesystem',
             'disk' => 'supervisor_local',
-            'order' => 'asc',
+            'order' => 'desc',
+            'table' => [
+                'date' => [
+                    'search' => false,
+                    'width' => 150
+                ],
+                'more' => [
+                    'content' => 'click'
+                ]
+            ],
             'regular' => [
                 'expres' => '/\[(\d{4}[-\d{2}]{2}.*?)\] (.+?)\.(.+?):(.*)/',
                 'output' => ['date', 'env', 'level', 'code', 'more']
             ],
-            'header' => ['id', 'date', 'env', 'level', 'code', 'fullText'],
             'extension' => 'log'
         ],
     ],
