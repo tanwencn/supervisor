@@ -17,7 +17,8 @@ class HomeController extends Controller
     public function index()
     {
         return view('supervisor::layout', [
-            'supervisorBasePath' => Supervisor::config('deep_base_router').'/'.Supervisor::config('path')
+            'supervisorBasePath' => Supervisor::config('deep_base_router').'/'.Supervisor::config('path'),
+            'config' => Supervisor::viewConfig()
         ]);
     }
 

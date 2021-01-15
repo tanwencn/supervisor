@@ -3,8 +3,9 @@
 namespace Tanwencn\Supervisor;
 
 use Closure;
-use Tanwencn\Supervisor\FileMode\PositiveStreamMode;
-use Tanwencn\Supervisor\FileMode\ReverseStreamMode;
+use Tanwencn\Supervisor\Mode\FilesystemMode;
+use Tanwencn\Supervisor\Mode\PositiveStreamMode;
+use Tanwencn\Supervisor\Mode\ReverseStreamMode;
 
 class Supervisor
 {
@@ -44,14 +45,14 @@ class Supervisor
     }
 
     /**
-     * Get the default JavaScript variables for Horizon.
+     * Get the default JavaScript variables for Supervisor.
      *
      * @return array
      */
     public static function scriptVariables()
     {
         return [
-            'path' => config('horizon.path'),
+            'path' => config('supervisor.path'),
         ];
     }
 
@@ -74,8 +75,7 @@ class Supervisor
             throw new \InvalidArgumentException("supervisor.resolvers.{$name} is not defind.");
 
         static::$resolever[$name] = new Resolever($config, array_merge([
-            'reverse' => ReverseStreamMode::class,
-            'positive' => PositiveStreamMode::class,
+            'filesystem' => FilesystemMode::class,
         ], config("supervisor.mode", [])), $name);
 
         return static::resolever($name);
@@ -84,5 +84,16 @@ class Supervisor
     public static function config($key)
     {
         return config("supervisor.{$key}");
+    }
+
+    public static function viewConfig()
+    {
+        $data = [];
+        $config = config("supervisor.resolvers", []);
+        foreach ($config as $key => $c){
+            $data[$key]['table'] = data_get($c, 'table', []);
+        }
+
+        return $data;
     }
 }

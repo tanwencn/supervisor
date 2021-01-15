@@ -13,6 +13,7 @@
     <div id="app"></div>
     <script>
         window.basePath = '{{ $supervisorBasePath }}'
+        window.supervisorConfig = @json($config)
     </script>
     <script src="{{asset(mix('app.js', 'vendor/supervisor'))}}"></script>
 </body>

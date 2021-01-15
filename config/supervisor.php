@@ -89,18 +89,17 @@ return [
     */
 
     'resolvers' => [
-        'reverse' => [
+        'default' => [
+            'mode' => 'filesystem',
             'disk' => 'supervisor_local',
-            'mode' => 'reverse',
-            'format' => 'reverse',
+            'order' => 'asc',
+            'regular' => [
+                'expres' => '/\[(\d{4}[-\d{2}]{2}.*?)\] (.+?)\.(.+?):(.*)/',
+                'output' => ['date', 'env', 'level', 'code', 'more']
+            ],
+            'header' => ['id', 'date', 'env', 'level', 'code', 'fullText'],
             'extension' => 'log'
         ],
-        'positive' => [
-            'disk' => 'supervisor_local',
-            'mode' => 'positive',
-            'format' => 'positive',
-            'extension' => 'log'
-        ]
     ],
 
     /*
@@ -113,31 +112,7 @@ return [
     | 这个是Supervisor视图列表中要显示出来的解析器列表
     |
     */
-    'view' => ['reverse', 'positive'],
-
-    /*
-    |--------------------------------------------------------------------------
-    | mode
-    |--------------------------------------------------------------------------
-    |
-    | This is a custom file handler.
-    |
-    | 这个是自定义文件处理器
-    |
-    */
-    'mode' => [],
-
-    /*
-    |--------------------------------------------------------------------------
-    | mode
-    |--------------------------------------------------------------------------
-    |
-    | This is a custom match and return result.
-    |
-    | 这个是自定义匹配及返回结果
-    |
-    */
-    'format' => [],
+    'view' => ['default'],
 
     /*
     |--------------------------------------------------------------------------
@@ -147,7 +122,7 @@ return [
     | If your APP is not in the root directory of domain name access road jin.
     | Just configure this prefix
     |
-    | 如果你的APP不在域名访问路劲的根目录下，就配置上这个前缀吧
+    | 如果你的应用不在域名访问路劲的根目录下，就配置上这个前缀吧
     |
     */
     'deep_base_router' => ''

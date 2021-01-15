@@ -3,8 +3,11 @@
 namespace Tanwencn\Supervisor;
 
 use Illuminate\Support\Collection;
-use Tanwencn\Supervisor\FileMode\PositiveStreamMode;
-use Tanwencn\Supervisor\FileMode\ReverseStreamMode;
+use Tanwencn\Supervisor\Mode\FilesystemAscMode;
+use Tanwencn\Supervisor\Mode\FilesystemDescMode;
+use Tanwencn\Supervisor\Mode\FilesystemMode;
+use Tanwencn\Supervisor\Mode\PositiveStreamMode;
+use Tanwencn\Supervisor\Mode\ReverseStreamMode;
 use Tanwencn\Supervisor\MacthForamt\PositiveLaravelLog;
 use Tanwencn\Supervisor\MacthForamt\ReverseLaravelLog;
 
@@ -13,7 +16,6 @@ class Resolever implements \Serializable
     protected $config;
 
     protected $filesystem;
-
     protected $model;
 
     protected $container;
@@ -74,6 +76,10 @@ class Resolever implements \Serializable
     protected function newContainer($path)
     {
         $class = $this->mode;
+
+        if($class == FilesystemMode::class){
+            $class = strtolower(data_get($this->config, 'order', ''))=='desc'?FilesystemDescMode::class:FilesystemAscMode::class;
+        }
 
         if (!class_exists($class))
             throw new \InvalidArgumentException("{$class} it's not found.");

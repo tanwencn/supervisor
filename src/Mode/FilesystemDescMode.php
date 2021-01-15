@@ -1,11 +1,9 @@
 <?php
 
-namespace Tanwencn\Supervisor\Handler;
+namespace Tanwencn\Supervisor\Mode;
 
-class ReverseAnalysis extends StreamAnalysis
+class FilesystemDescMode extends FilesystemMode
 {
-    protected $offset = 0;
-
     protected function seek()
     {
         fseek($this->stream, $this->offset, SEEK_END);
@@ -22,7 +20,7 @@ class ReverseAnalysis extends StreamAnalysis
     protected function match(&$content, $char)
     {
         $content = $char . $content;
-        preg_match('/\[(\d{4}[-\d{2}]{2}.*?)\] (.+?)\.(.+?):(.*)/', $content, $result);
+        preg_match($this->config['regular']['expres'], $content, $result);
         if (!empty($result)) $result[] = $content;
         return $result;
     }

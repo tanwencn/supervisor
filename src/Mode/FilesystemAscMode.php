@@ -1,8 +1,8 @@
 <?php
 
-namespace Tanwencn\Supervisor\FileMode;
+namespace Tanwencn\Supervisor\Mode;
 
-class PositiveStreamMode extends StreamAnalysis
+class FilesystemAscMode extends FilesystemMode
 {
     protected function seek()
     {
@@ -20,7 +20,7 @@ class PositiveStreamMode extends StreamAnalysis
     {
         $content .= $char;
         $data = [];
-        $match = preg_match_all('/\[(\d{4}[-\d{2}]{2}.*?)\] (.+?)\.(.+?):(.*)/', $content, $result, PREG_OFFSET_CAPTURE);
+        $match = preg_match_all($this->config['regular']['expres'], $content, $result, PREG_OFFSET_CAPTURE);
         if($char === false){
             $this->offset = ftell($this->stream);
             $data = array_column(array_column($result, 0), 0);

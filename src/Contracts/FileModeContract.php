@@ -6,9 +6,9 @@ namespace Tanwencn\Supervisor\Contracts;
 use League\Flysystem\Filesystem;
 
 
-interface AnalysisInterface
+interface FileModeContract
 {
-    public function __construct($path, $config);
+    public function __construct(string $path, array $config);
 
     public function bootstrap(Filesystem $filesystem);
 

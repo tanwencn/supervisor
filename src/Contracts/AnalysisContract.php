@@ -6,11 +6,11 @@ namespace Tanwencn\Supervisor\Contracts;
 use League\Flysystem\Filesystem;
 
 
-interface FileMode
+interface AnalysisContract
 {
     public function __construct($path, $config);
 
     public function bootstrap(Filesystem $filesystem);
 
-    public function next(MatchFormatInterface $format):array;
+    public function next():array;
 }
