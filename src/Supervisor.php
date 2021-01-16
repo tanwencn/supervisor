@@ -3,6 +3,7 @@
 namespace Tanwencn\Supervisor;
 
 use Closure;
+use Tanwencn\Supervisor\Mode\DatabaseMode;
 use Tanwencn\Supervisor\Mode\FilesystemMode;
 use Tanwencn\Supervisor\Mode\PositiveStreamMode;
 use Tanwencn\Supervisor\Mode\ReverseStreamMode;
@@ -76,6 +77,7 @@ class Supervisor
 
         static::$resolever[$name] = new Resolever($config, array_merge([
             'filesystem' => FilesystemMode::class,
+            'database' => DatabaseMode::class,
         ], config("supervisor.mode", [])), $name);
 
         return static::resolever($name);

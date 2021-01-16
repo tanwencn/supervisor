@@ -20,7 +20,7 @@ class FilesystemAscMode extends FilesystemMode
     {
         $content .= $char;
         $data = [];
-        $match = preg_match_all($this->config['regular']['expres'], $content, $result, PREG_OFFSET_CAPTURE);
+        $match = preg_match_all($this->config['regular'], $content, $result, PREG_OFFSET_CAPTURE);
         if($char === false){
             $this->offset = ftell($this->stream);
             $data = array_column(array_column($result, 0), 0);

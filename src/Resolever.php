@@ -3,6 +3,7 @@
 namespace Tanwencn\Supervisor;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 use Tanwencn\Supervisor\Mode\FilesystemAscMode;
 use Tanwencn\Supervisor\Mode\FilesystemDescMode;
 use Tanwencn\Supervisor\Mode\FilesystemMode;
@@ -43,20 +44,8 @@ class Resolever implements \Serializable
         }
 
         foreach ((array)$this->container as $container) {
-            $container->bootstrap($this->filesystem());
+            $this->bootstrap($container);
         }
-    }
-
-    /**
-     *
-     * @return object League\Flysystem\Filesystem
-     */
-    protected function filesystem()
-    {
-        if (!$this->filesystem)
-            $this->filesystem = \Storage::disk($this->config['disk'])->getDriver();
-
-        return $this->filesystem;
     }
 
     public function container($path)
@@ -65,6 +54,10 @@ class Resolever implements \Serializable
         if (isset($this->container[$code])) return $this->container[$code];
 
         return $this->container[$code] = $this->newContainer($path);
+    }
+
+    protected function bootstrap($container){
+        if (method_exists($container, 'bootstrap')) $container->bootstrap();
     }
 
     protected function newContainer($path)
@@ -79,7 +72,7 @@ class Resolever implements \Serializable
             throw new \InvalidArgumentException("{$class} it's not found.");
 
         $container = new $class($path, $this->config);
-        $container->bootstrap($this->filesystem());
+        $this->bootstrap($container);
 
         return $container;
     }
@@ -92,8 +85,14 @@ class Resolever implements \Serializable
      */
     public function files($path = '/')
     {
-        $contents = $this->filesystem()->listContents($path, false);
+        $method = 'filesBy'. ucfirst($this->config['mode']);
+        if(!method_exists($this, $method)) throw new \InvalidArgumentException("{$method} it's not found.");
 
+        return call_user_func([$this, $method], $path);
+    }
+
+    protected function filesByFilesystem($path){
+        $contents = Storage::disk($this->config['disk'])->getDriver()->listContents($path, false);
         return Collection::make($contents)
             ->filter(function ($item) {
                 return $item['type'] == 'dir' || $item['extension'] == $this->config['extension'];
@@ -110,5 +109,22 @@ class Resolever implements \Serializable
             })
             ->values()
             ->all();
+    }
+
+    protected function filesByDatabase(){
+        $group = array_filter(data_get($this->config, 'group', []));
+        if(empty($group)) $group = ['default'=>[]];
+
+        foreach ($group as $key => $val) {
+            $group[$key] = [
+                'basename' => 'sdafas',
+                'resolver' => $this->name,
+                'isLeaf' => true,
+                'code' => base64_encode($key),
+                'description' => !empty($val)?'Display condition by '.json_encode($val).'.':''
+            ];
+        }
+
+        return array_values($group);
     }
 }

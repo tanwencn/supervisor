@@ -20,7 +20,7 @@ class FilesystemDescMode extends FilesystemMode
     protected function matchExpres(&$content, $char)
     {
         $content = $char . $content;
-        preg_match($this->config['regular']['expres'], $content, $result);
+        preg_match($this->config['regular'], $content, $result);
         if (!empty($result)) $result[] = $content;
         return $result;
     }

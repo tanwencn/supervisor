@@ -96,13 +96,13 @@ class SupervisorServiceProvider extends ServiceProvider
             SUPERVISOR_PATH.'/config/supervisor.php', 'supervisor'
         );
 
-        if (! ($this->app instanceof CachesConfiguration && $this->app->configurationIsCached())) {
-            $config = $this->app->make('config');
+        // if (! ($this->app instanceof CachesConfiguration && $this->app->configurationIsCached())) {
+        //     $config = $this->app->make('config');
 
-            $config->set('filesystems.disks', array_merge(
-                $config->get('supervisor.disks', []), $config->get('filesystems.disks', [])
-            ));
-        }
+        //     $config->set('filesystems.disks', array_merge(
+        //         $config->get('supervisor.disks', []), $config->get('filesystems.disks', [])
+        //     ));
+        // }
     }
 
     /**

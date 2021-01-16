@@ -68,10 +68,12 @@ export default {
     selectTree(keys, e) {
       var data = e.node.dataRef;
       this.$emit("descriptionsEvent", {
+        description: data.description,
+        path: data.path,
         path: data.path,
         type: data.type,
         size: this.fileSize(data.size),
-        date: this.$moment(data.timestamp * 1000).format("YYYY-MM-DD HH:mm:ss"),
+        date: data.timestamp?this.$moment(data.timestamp * 1000).format("YYYY-MM-DD HH:mm:ss"):'',
       });
       var code = keys[0];
       var isFile = e.node.isLeaf;

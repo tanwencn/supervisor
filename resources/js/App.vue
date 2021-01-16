@@ -20,6 +20,11 @@
                 {{ descriptions.path }}
               </a-descriptions-item>
             </a-descriptions>
+            <a-descriptions size="small" :column="1">
+              <a-descriptions-item label="Description" v-if="descriptions.description">
+                {{ descriptions.description }}
+              </a-descriptions-item>
+            </a-descriptions>
           </a-page-header>
         </a-col>
       </a-row>

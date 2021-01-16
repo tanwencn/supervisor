@@ -10,7 +10,9 @@ interface FileModeContract
 {
     public function __construct(string $path, array $config);
 
-    public function bootstrap(Filesystem $filesystem);
+    public function bootstrap();
 
     public function next():array;
+
+    public function filesystem(): Filesystem;
 }

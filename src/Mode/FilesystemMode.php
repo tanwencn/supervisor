@@ -2,8 +2,11 @@
 
 namespace Tanwencn\Supervisor\Mode;
 
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 use League\Flysystem\Filesystem;
 use Tanwencn\Supervisor\Contracts\FileModeContract;
+use Illuminate\Support\Str;
 
 abstract class FilesystemMode implements FileModeContract
 {
@@ -20,6 +23,10 @@ abstract class FilesystemMode implements FileModeContract
 
     protected $offset = 0;
 
+    protected $root;
+
+    protected $filesystem;
+
     abstract protected function seek();
 
     abstract protected function read(): iterable;
@@ -28,12 +35,10 @@ abstract class FilesystemMode implements FileModeContract
 
     protected function match(&$content, $char)
     {
-        $expres = $this->config['regular']['expres'];
+        $expres = $this->config['regular'];
         if ($expres != 'json') {
             if ($expres == 'default') {
-                $this->config['regular']['expres'] = '/\[(\d{4}[-\d{2}]{2}.*?)\] (.+?)\.(.+?):(.*)/';
-                if (empty($this->config['regular']['output']))
-                    $this->config['regular']['output'] = ['date', 'env', 'level', 'code', 'more'];
+                $this->config['regular'] = '/\[(\d{4}[-\d{2}]{2}.*?)\] (.+?)\.(.+?):(.*)/';
             }
             return $this->matchExpres($content, $char);
         }
@@ -54,16 +59,16 @@ abstract class FilesystemMode implements FileModeContract
 
     public function __construct(string $path, array $config)
     {
-        $this->path = $path;
-        // $config['regular'] = array_merge([
-        //     'expres' => '/\[(\d{4}[-\d{2}]{2}.*?)\] (.+?)\.(.+?):(.*)/',
-        //     'output' => ['date', 'env', 'level', 'code', 'more']
-        // ], $config['regular']);
+        $root = data_get($config, 'root', '');
+        // $root = Str::start(data_get($config, 'root', ''), '/');
+        // if(Str::endsWith($root, '/')) $root = substr($root, 0, -1);
+        $this->path = $root . Str::start($path, '/');
         $this->config = $config;
     }
 
-    public function bootstrap(Filesystem $filesystem)
+    public function bootstrap()
     {
+        $filesystem = $this->filesystem();
         if (!$this->stream) {
             $this->stream = $filesystem->readStream($this->path);
             $this->seek();
@@ -91,12 +96,24 @@ abstract class FilesystemMode implements FileModeContract
             return mb_convert_encoding($val, "UTF-8");
         }, $values);
 
-        $output = data_get($this->config, 'regular.output', []);
-        if (!empty($output)) {
-            $header = array_slice($output, 0, count($values));
-            $val = array_slice(array_values($values), 0, count($output));
-            $values = array_combine($header, $val);
-        }
+        // $output = data_get($this->config, 'regular.output', []);
+        // if (!empty($output)) {
+        //     $header = array_slice($output, 0, count($values));
+        //     $val = array_slice(array_values($values), 0, count($output));
+        //     $values = array_combine($header, $val);
+        // }
         return array_merge(['supervisorid' => $this->line], $values);
+    }
+
+    /**
+     *
+     * @return object League\Flysystem\Filesystem
+     */
+    public function filesystem(): Filesystem
+    {
+        if (!$this->filesystem)
+            $this->filesystem = Storage::disk($this->config['disk'])->getDriver();
+
+        return $this->filesystem;
     }
 }

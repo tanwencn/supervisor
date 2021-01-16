@@ -57,25 +57,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | disks
-    |--------------------------------------------------------------------------
-    |
-    | This is the Filesystem drive configuration.
-    | for details, please refer to config/ Filesystem.php and pay attention to the key values.
-    |
-    | 这个是Filesystem驱动配置，具体配置项参考config/filesystem.php，注意key值不要重复。
-    |
-    */
-
-    'disks' => [
-        'supervisor_local' => [
-            'driver' => 'local',
-            'root' => storage_path('logs'),
-        ],
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
     | resolvers
     |--------------------------------------------------------------------------
     |
@@ -91,29 +72,40 @@ return [
     'resolvers' => [
         'default' => [
             'mode' => 'filesystem',
-            'disk' => 'supervisor_local',
+            'disk' => 'logs',
             'order' => 'desc',
             'render' => [
                 //'_visible' => ['date'],
                 //'_hidden' => ['date'],
-                'date' => [
+                'supervisorid' => [
+                    'title' => 'id'
+                ],
+                '0' => [
                     'search' => false,
+                    'title' => 'date',
                     // 'content' => 'ellipsis'
                     //'width' => 150
                 ],
-                'more' => [
+                '1' => [
+                    'title' => 'date',
+                ],
+                '2' => [
+                    'title' => 'env',
+                ],
+                '3' => [
+                    'title' => 'title',
+                ],
+                '4' => [
+                    'title' => 'more',
                     'content' => 'click'
                 ]
             ],
-            'regular' => [
-                'expres' => 'default',
-                'output' => ['date', 'env', 'level', 'code', 'more']
-            ],
+            'regular' => 'default',
             'extension' => 'log'
         ],
-        'default1' => [
+        'json' => [
             'mode' => 'filesystem',
-            'disk' => 'supervisor_local',
+            'disk' => 'logs',
             'order' => 'desc',
             'render' => [
                 //'_visible' => ['date'],
@@ -127,12 +119,32 @@ return [
                     'content' => 'click'
                 ]
             ],
-            'regular' => [
-                'expres' => 'json',
-                //'output' => ['date', 'env', 'level', 'code', '更多']
-                //'output' => ['date', '更多']
-            ],
+            'regular' => 'json',
             'extension' => 'json'
+        ],
+        'database' => [
+            'mode' => 'database',
+            'table' => 'logs',
+            'connection' => 'mysql',
+            'primaryKey' => 'id',
+            'order' => 'asc',
+            'group' => [
+                // 'sadas' => [
+                //     ['content', '=', 'test1']
+                // ]
+            ],
+            'render' => [
+                //'_visible' => ['date'],
+                //'_hidden' => ['date'],
+                'date' => [
+                    'search' => false,
+                    // 'content' => 'ellipsis'
+                    //'width' => 150
+                ],
+                'content' => [
+                    'content' => 'click'
+                ]
+            ]
         ],
     ],
 
@@ -146,7 +158,7 @@ return [
     | 这个是Supervisor视图列表中要显示出来的解析器列表
     |
     */
-    'view' => ['default', 'default1'],
+    'view' => ['default', 'database'],
 
     /*
     |--------------------------------------------------------------------------

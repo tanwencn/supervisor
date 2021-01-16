@@ -202,7 +202,7 @@ export default {
         title: key,
         scopedSlots: { customRender: "highlight" },
       };
-
+      if(config.title) column.title = config.title;
       if (config.search) {
         column.scopedSlots.filterDropdown = "filterDropdown";
         column.scopedSlots.filterIcon = "filterIcon";
