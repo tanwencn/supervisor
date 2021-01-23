@@ -75,15 +75,12 @@ return [
             'disk' => 'logs',
             'order' => 'desc',
             'render' => [
-                //'_visible' => ['date'],
-                //'_hidden' => ['date'],
-                'supervisorid' => [
-                    'title' => 'id'
-                ],
+                //'_visible' => ['date'], //Only fields are displayed 显示的字段，默认显示全部
+                //'_hidden' => ['date'], //Hidden fields 不显示的字段
                 '0' => [
                     'search' => false,
                     'title' => 'date',
-                    // 'content' => 'ellipsis'
+                    // 'content' => 'ellipsis' //ellipsis or click 省略内容及点击显示
                     //'width' => 150
                 ],
                 '1' => [
@@ -103,48 +100,29 @@ return [
             'regular' => 'default',
             'extension' => 'log'
         ],
-        'json' => [
+        'json example' => [
             'mode' => 'filesystem',
             'disk' => 'logs',
             'order' => 'desc',
-            'render' => [
-                //'_visible' => ['date'],
-                //'_hidden' => ['date'],
-                'date' => [
-                    'search' => false,
-                    // 'content' => 'ellipsis'
-                    //'width' => 150
-                ],
-                'employee' => [
-                    'content' => 'click'
-                ]
-            ],
+            'render' => [],
             'regular' => 'json',
             'extension' => 'json'
         ],
-        'database' => [
+        'database example' => [
             'mode' => 'database',
             'table' => 'logs',
-            'connection' => 'mysql',
+            'connection' => 'mysql', //By config/database
             'primaryKey' => 'id',
             'order' => 'asc',
             'group' => [
-                // 'sadas' => [
-                //     ['content', '=', 'test1']
-                // ]
-            ],
-            'render' => [
-                //'_visible' => ['date'],
-                //'_hidden' => ['date'],
-                'date' => [
-                    'search' => false,
-                    // 'content' => 'ellipsis'
-                    //'width' => 150
+                'example where' => [
+                    ['type', '=', '1']
                 ],
-                'content' => [
-                    'content' => 'click'
+                'example where' => [
+                    ['type', '=', '2']
                 ]
-            ]
+            ],
+            'render' => []
         ],
     ],
 
@@ -158,7 +136,7 @@ return [
     | 这个是Supervisor视图列表中要显示出来的解析器列表
     |
     */
-    'view' => ['default', 'database'],
+    'view' => ['default'],
 
     /*
     |--------------------------------------------------------------------------

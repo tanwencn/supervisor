@@ -113,11 +113,11 @@ class Resolever implements \Serializable
 
     protected function filesByDatabase(){
         $group = array_filter(data_get($this->config, 'group', []));
-        if(empty($group)) $group = ['default'=>[]];
+        if(empty($group)) $group = ['All List'=>[]];
 
         foreach ($group as $key => $val) {
             $group[$key] = [
-                'basename' => 'sdafas',
+                'basename' => $key,
                 'resolver' => $this->name,
                 'isLeaf' => true,
                 'code' => base64_encode($key),

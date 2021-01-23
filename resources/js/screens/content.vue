@@ -183,13 +183,6 @@ export default {
     },
     getColumn(key) {
       var resolver = this.$route.query.resolver;
-      var visible = window.supervisorConfig[resolver].render["_visible"];
-      visible = visible ? visible : [];
-      var hidden = window.supervisorConfig[resolver].render["_hidden"];
-      hidden = hidden ? hidden : [];
-
-      if (visible.length > 0 && visible.indexOf(key) == -1) return;
-      if (hidden.length > 0 && hidden.indexOf(key) != -1) return;
       var config = {
         search: true,
         content: null,
@@ -229,12 +222,20 @@ export default {
       return column;
     },
     setColumns(keys) {
-      if (keys.indexOf("supervisorid") > -1) {
-        this.columns.push(this.getColumn("supervisorid"));
-      }
+      var resolver = this.$route.query.resolver;
+      var visible = window.supervisorConfig[resolver].render["_visible"];
+      visible = visible ? visible : [];
+      var hidden = window.supervisorConfig[resolver].render["_hidden"];
+      hidden = hidden ? hidden : [];      
+
+      // if (keys.indexOf("supervisorid") > -1) {
+      //   this.columns.push(this.getColumn("supervisorid"));
+      // }
 
       keys.forEach((key) => {
         if (key == "supervisorid") return;
+        if (visible.length > 0 && visible.indexOf(key) == -1) return;
+      if (hidden.length > 0 && hidden.indexOf(key) != -1) return;
         this.columns.push(this.getColumn(key));
       });
     },
