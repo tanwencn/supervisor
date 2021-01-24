@@ -61,11 +61,8 @@ return [
     |--------------------------------------------------------------------------
     |
     | is a file parsing driver.
-    | that provides Laravel log reverse and positive parsers by default The
-    | Custom drivers can be configured in the handler item of config/supervisor.php
     |
-    | 这个是文件解析驱动，默认提供Laravel日志的逆向(reverse)和正向(positive)解析器
-    | 自定义驱动可以在config/supervisor.php 的handler项进行配置
+    | 这个是文件解析驱动配置
     |
     */
 
@@ -107,6 +104,21 @@ return [
             'render' => [],
             'regular' => 'json',
             'extension' => 'json'
+        ],
+        'regular example' => [
+            'mode' => 'filesystem',
+            'disk' => 'logs',
+            'order' => 'desc',
+            'render' => [
+                '0' => [
+                    'title' => 'One Match'
+                ],
+                '1' => [
+                    'title' => 'Two Match'
+                ]
+            ],
+            'regular' => '/(.*?)_(.*?)/',
+            'extension' => 'txt'
         ],
         'database example' => [
             'mode' => 'database',
