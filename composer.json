@@ -1,6 +1,6 @@
 {
     "name": "tanwencn/supervisor",
-    "description": "日志查看器，支持自定义文本解析。",
+    "description": "方便的输出日志文件、自定义文本、DB表等，你想监控的行为记录。",
     "type": "library",
     "keywords": ["laravel", "log-viewer", "file-parsing-viewer", "file-content-fromat"],
     "homepage": "https://github.com/tanwencn/supervisor",
