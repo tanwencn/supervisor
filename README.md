@@ -19,7 +19,7 @@ composer require tanwencn/supervisor
 php artisan supervisor:install
 ```
 
-```supervisor```的默认配置显示项为```filesystem.logs```。所以还需要在 ```config/filesystems.php``` 中添加 ```disks``` ：
+```Supervisor```的默认配置显示项为```filesystem.logs```。所以还需要在 ```config/filesystems.php``` 中添加 ```disks``` ：
 ```php
 'logs' => [
             'driver' => 'local',
@@ -29,7 +29,7 @@ php artisan supervisor:install
 
 ### 配置
 
-Supervisor 资源发布之后，他的主要配置文件会被分配到 config/supervisor.php 文件。可以用这个配置文件配置工作选项。
+```Supervisor``` 资源发布之后，他的主要配置文件会被分配到 ```config/supervisor.php``` 文件。可以用这个配置文件配置工作选项。
 
 在配置文件中，```resolvers```项默认提供了Laravel日志解析配置，还有```Json```、```正则表达式```、```mysql```解析配置示例，你只要稍微对其进行改动，就可以直接用在你的应用中了。
 
@@ -37,7 +37,7 @@ Supervisor 资源发布之后，他的主要配置文件会被分配到 config/s
 
 ### 访问授权
 
-Supervisor 在 /supervisor 上显示了一个视图面板。默认情况下，你只能在 local 环境中访问这个面板。在你的 App/Providers/AppServiceProvider.php 文件中添加 gate 方法来控制着在非本地环境中对 Supervisor 的访问：
+```Supervisor``` 在 ```/supervisor``` 路径上显示了一个视图面板。默认情况下，你只能在 ```local``` 环境中访问这个面板。在你的 ```App/Providers/AppServiceProvider.php``` 文件中添加 ```gate``` 方法来控制着在非本地环境中对 ```Supervisor``` 的访问：
 
 ```php
 public function boot()
