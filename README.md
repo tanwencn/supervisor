@@ -24,7 +24,7 @@ php artisan supervisor:install
 'mode' => 'filesystem',
 'disk' => 'logs',
 ```
-所以还需要在```config/filesystems.php```中添加```disks```：
+所以还需要在 ```config/filesystems.php``` 中添加 ```disks``` ：
 ```php
 'logs' => [
             'driver' => 'local',
