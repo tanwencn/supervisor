@@ -81,10 +81,10 @@ return [
                     //'width' => 150
                 ],
                 '1' => [
-                    'title' => 'date',
+                    'title' => 'env',
                 ],
                 '2' => [
-                    'title' => 'env',
+                    'title' => 'level',
                 ],
                 '3' => [
                     'title' => 'title',
