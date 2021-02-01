@@ -19,12 +19,7 @@ composer require tanwencn/supervisor
 php artisan supervisor:install
 ```
 
-```supervisor```的默认配置显示项为：
-```php
-'mode' => 'filesystem',
-'disk' => 'logs',
-```
-所以还需要在 ```config/filesystems.php``` 中添加 ```disks``` ：
+```supervisor```的默认配置显示项为```filesystem.logs```。所以还需要在 ```config/filesystems.php``` 中添加 ```disks``` ：
 ```php
 'logs' => [
             'driver' => 'local',
