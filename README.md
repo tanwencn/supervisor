@@ -19,6 +19,19 @@ composer require tanwencn/supervisor
 php artisan supervisor:install
 ```
 
+```supervisor```的默认配置显示项为：
+```php
+'mode' => 'filesystem',
+'disk' => 'logs',
+```
+所以还需要在```config/filesystems.php```中添加```disks```：
+```php
+'logs' => [
+            'driver' => 'local',
+            'root' => storage_path('logs'),
+        ]
+```
+
 ### 配置
 
 Supervisor 资源发布之后，他的主要配置文件会被分配到 config/supervisor.php 文件。可以用这个配置文件配置工作选项。
