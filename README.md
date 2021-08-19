@@ -6,8 +6,7 @@ Supervisor 为你的 Laravel 文件提供了一个美观的可视化列表， �
 对于Filesystem模型，默认提供了```Laravel日志```、```Json```、```正则表达式```解析器以解析不同需求的文件内容。
 
 所有的配置存储在一个简单的配置文件中，你可以方便的对其进行源码控制。
-
-![Uploading image.png…]()
+![image](https://user-images.githubusercontent.com/12136184/130049625-74e631d1-02c7-4669-b2a5-8e34bee1a7a9.png)
 
 ## 安装
 
