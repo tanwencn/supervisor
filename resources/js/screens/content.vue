@@ -175,8 +175,8 @@ export default {
     onShow(text, title) {
       this.modalTitle = title;
       try {
-        text = JSON.parse(text);
-        text = JSON.stringify(text, null, 4);
+        var j = typeof text == "object"?text:JSON.parse(text);
+        text = JSON.stringify(j, null, 4);
       } catch (err) {}
       this.modalText = text;
       this.show = true;
